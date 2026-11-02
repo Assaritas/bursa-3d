@@ -1,0 +1,16 @@
+{
+  "name": "Bursa 3D Rehber",
+  "short_name": "Bursa 3D",
+  "description": "Bursa'nın yer şekilleri, tarihi ve coğrafyası – çevrimdışı 3B harita",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#14232a",
+  "theme_color": "#14232a",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

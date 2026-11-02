@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bursa 3D Rehber</title>
+  <meta name="description" content="Bursa'nın yer şekilleri, tarihi ve coğrafyası – çevrimdışı çalışan interaktif 3B harita.">
+  <meta name="theme-color" content="#14232a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.min.js",
+      "three/addons/": "./vendor/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="scene" aria-label="Bursa 3B harita"></div>
+
+  <!-- Üst çubuk -->
+  <header class="topbar">
+    <button id="panel-toggle" class="icon-btn" type="button" aria-controls="panel" aria-expanded="true" title="Katmanlar">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Zm-8.2 9L2 13l10 5 10-5-1.8-1L12 16l-8.2-4Zm0 4L2 17l10 5 10-5-1.8-1L12 20l-8.2-4Z" fill="currentColor"/></svg>
+    </button>
+    <div class="brand">
+      <strong>Bursa</strong><span>3B Rehber</span>
+    </div>
+    <button id="install" class="chip" type="button" hidden>Uygulamayı yükle</button>
+  </header>
+
+  <!-- Lejant / katman paneli -->
+  <aside id="panel" class="panel" aria-label="Katmanlar ve ayarlar">
+    <div class="panel-head">
+      <h1>Katmanlar</h1>
+      <button id="panel-close" class="icon-btn small" type="button" aria-label="Paneli kapat">✕</button>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Yer ara: Ulu Cami, İznik…" autocomplete="off" aria-label="Yer ara">
+      <ul id="search-results" class="search-results"></ul>
+    </div>
+
+    <div id="layer-list" class="layer-list"></div>
+    <div class="row-btns">
+      <button id="all-on" type="button" class="link-btn">Tümünü aç</button>
+      <button id="all-off" type="button" class="link-btn">Tümünü kapat</button>
+    </div>
+
+    <div class="control">
+      <div class="control-head">
+        <label for="depth">Yükseklik abartısı</label>
+        <output id="depth-out" for="depth">×3</output>
+      </div>
+      <input id="depth" type="range" min="0" max="16" step="0.1" value="5">
+      <p class="hint">Dağları belirginleştirmek için sağa kaydırın. ×1 gerçek ölçektir.</p>
+    </div>
+
+    <button id="reset-view" type="button" class="btn wide">Başlangıç görünümüne dön</button>
+
+    <p class="hint gestures">
+      <span class="only-touch">Tek parmak: kaydır · İki parmak: yakınlaştır/döndür · Pine dokun: bilgi</span>
+      <span class="only-mouse">Sol tuş: döndür · Sağ tuş: kaydır · Tekerlek: yakınlaştır · Pine tıkla: bilgi</span>
+    </p>
+
+    <footer class="credits">
+      <p>Harita: © Harita Genel Müdürlüğü (1:180.000 Fiziki Harita)<br>
+      Veri: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> katkıcıları · Vikipedi (CC BY-SA)<br>
+      Fay hatları şematiktir.</p>
+      <p id="data-info"></p>
+    </footer>
+  </aside>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <section id="popup" class="popup" role="dialog" aria-labelledby="popup-title" hidden>
+    <button id="popup-close" class="icon-btn small close" type="button" aria-label="Kapat">✕</button>
+    <div id="popup-body" class="popup-body"></div>
+  </section>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <div id="loader" class="loader">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="loader-msg">Yükleniyor…</p>
+  </div>
+
+  <noscript>Bu uygulama JavaScript gerektirir.</noscript>
+  <script>
+    // Yükleme sırasında oluşan hataları ekranda göster (eski tarayıcı, WebGL yok vb.)
+    (function () {
+      var show = function (m) { var el = document.getElementById('loader-msg'); if (el && !document.getElementById('loader').classList.contains('done')) el.textContent = 'Hata: ' + m; };
+      window.addEventListener('error', function (e) { show(e.message || 'bilinmeyen hata'); });
+      window.addEventListener('unhandledrejection', function (e) { show((e.reason && e.reason.message) || String(e.reason)); });
+    })();
+  </script>
+  <script src="data/data.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
